@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# CLion temporary folders
+**/.idea
+*.iml
+**/target
+**/cmake-build-debug

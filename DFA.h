@@ -1,0 +1,8 @@
+//
+// Created by covariance on 06.05.2020.
+//
+
+#ifndef FINITE_AUTOMATONS_LIBRARY_DFA_H
+#define FINITE_AUTOMATONS_LIBRARY_DFA_H
+
+#endif //FINITE_AUTOMATONS_LIBRARY_DFA_H
