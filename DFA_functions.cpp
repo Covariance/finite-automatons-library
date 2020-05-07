@@ -1,6 +1,7 @@
 //
-// Created by covariance on 06.05.2020.
+// Created by covariance on 07.05.2020.
 //
+
 #include "DFA.h"
 
 void DFA::_calculate_inverse() {
@@ -117,75 +118,14 @@ bool DFA::_iso_dfs(std::vector<int> *iso, const DFA &that, int v) {
     return true;
 }
 
-
-DFA::DFA() : n(),
-             terminal(),
-             edges(),
-             _significant_calculated(false),
-             _cyclic_calculated(false),
-             _cyclic(false),
-             _inverse_calculated(false) {}
-
-DFA::DFA(int n, const std::vector<int> &terminalSet, const std::vector<std::pair<char, std::pair<int, int>>> &edgeset)
-        : n(n),
-          terminal(n, false),
-          edges(n, std::unordered_map<char, int>()),
-          _significant_calculated(false),
-          _cyclic_calculated(false),
-          _cyclic(false),
-          _inverse_calculated(false) {
-    for (int term : terminalSet) {
-        terminal[term - 1] = true;
-    }
-    for (auto edge : edgeset) {
-        edges[edge.second.first - 1].insert({edge.first, edge.second.second - 1});
-    }
+[[nodiscard]] int DFA::_from_by_way(int from, char by) const {
+    if (from == -1) return -1;
+    if (edges[from].find(by) == edges[from].end()) return -1;
+    return edges[from].find(by)->second;
 }
 
-std::ostream &operator<<(std::ostream &out, const DFA &dka) {
-    int m = 0, k = 0;
-    for (bool term : dka.terminal) {
-        if (term) {
-            k++;
-        }
-    }
-    for (const auto& edge : dka.edges) {
-        m += edge.size();
-    }
-    out << dka.n << ' ' << m << ' ' << k << '\n';
-    for (int i = 0; i < dka.n; i++) {
-        if (dka.terminal[i]) {
-            out << i + 1 << ' ';
-        }
-    }
-    out << '\n';
-    for (int i = 0; i < dka.n; i++) {
-        for (auto edge : dka.edges[i]) {
-            out << i + 1 << ' ' << edge.second + 1 << ' ' << edge.first;
-        }
-    }
-    return out;
-}
-
-std::istream &operator>>(std::istream &in, DFA &dka) {
-    int m = 0, k = 0;
-    in >> dka.n >> m >> k;
-    dka.terminal.clear();
-    dka.terminal.resize(dka.n, false);
-    for (int i = 0; i < k; i++) {
-        int tmp = 0;
-        in >> tmp;
-        dka.terminal[tmp - 1] = true;
-    }
-    dka.edges.clear();
-    dka.edges.resize(dka.n, std::unordered_map<char, int>());
-    for (int i = 0; i < m; i++) {
-        int from = 0, to = 0;
-        char ch = 0;
-        in >> from >> to >> ch;
-        dka.edges[from - 1].insert({ch, to - 1});
-    }
-    return in;
+[[nodiscard]] bool DFA::_terminal(int v) const {
+    return (v != -1) && (this->terminal[v]);
 }
 
 bool DFA::accepts(const std::string &s) {

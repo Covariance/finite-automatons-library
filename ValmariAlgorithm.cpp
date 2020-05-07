@@ -6,4 +6,15 @@
 
 #include "DFA.h"
 
-/* code to be included */
+class valmari_minimizer {
+
+public:
+    DFA minimize(const DFA& dfa) {
+        return dfa;
+    }
+};
+
+DFA DFA::minimize() {
+    valmari_minimizer A;
+    return A.minimize(*this);
+}
