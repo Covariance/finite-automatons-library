@@ -10,6 +10,7 @@
 #include <queue>
 #include <unordered_set>
 #include <iostream>
+#include <algorithm>
 
 class DFA {
 private:
